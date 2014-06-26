@@ -16,7 +16,7 @@
 </tr>
 </table>
 
-## Fork notice (blatant copy)
+## Fork notice (blatant copy, broke all the tests)
 This is a fork of [gulp-concat](https://github.com/wearefractal/gulp-concat) and does this:
 
 Concatenates handlebars/mustache templates into a single .js file, where template files are mapped to a global template object (based on the filename of the template).
@@ -47,11 +47,12 @@ $('body').append(welcomeHtml);
 ```javascript
 var concat = require('gulp-hbs-concat');
 
-gulp.task('scripts', function() {
-  gulp.src('./lib/*.js')
-    .pipe(concat('all.js'))
-    .pipe(gulp.dest('./dist/'))
+gulp.task('templates', function(){
+  gulp.src('paths/glob to templates')
+    .pipe(hbsconcat('templates.js', {newLine: '\n', prefix: 'MyApp.templates', postfix: ';'}))
+    .pipe(gulp.dest('js/src/'));
 });
+// templates.js should now be baked with uglify
 ```
 
 This will concat files by your operating systems newLine. It will take the base directory from the first file that passes through it.
