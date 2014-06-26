@@ -3,12 +3,12 @@
 ## Information
 
 <table>
-<tr> 
-<td>Package</td><td>gulp-concat</td>
+<tr>
+<td>Package</td><td>gulp-hbs-concat</td>
 </tr>
 <tr>
 <td>Description</td>
-<td>Concatenates files</td>
+<td>Concatenates handlebars templates into a js file</td>
 </tr>
 <tr>
 <td>Node Version</td>
@@ -16,10 +16,27 @@
 </tr>
 </table>
 
+## Fork notice (blatant copy)
+This is a fork of [gulp-concat](https://github.com/wearefractal/gulp-concat) and does this:
+
+Concatenates handlebars/mustache templates into a single .js file, where template files are mapped to a global template object (based on the filename of the template).
+
+The reasoning is that we want to interpolate variables and texts (which comes from a rest-api), and compile the templates at runtime in the browser. I could not find a gulp-plugin to do exactly (and only) this, so then we fork! :)
+
+#### Warning! Beginners mind! I'm a newbie to gulp, streams and stuff. This might not work as expected.
+
+### templates.js:
+```javascript
+// result will be something like this:
+MyApp.templates["welcome"] = 'Welcome {{user.name}}!';
+MyApp.templates["goodbye"] = 'Goodbye {{user.name}}!';
+
+```
+
 ## Usage
 
 ```javascript
-var concat = require('gulp-concat');
+var concat = require('gulp-hbs-concat');
 
 gulp.task('scripts', function() {
   gulp.src('./lib/*.js')

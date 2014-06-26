@@ -32,7 +32,7 @@ module.exports = function(fileName, opt) {
     var noNewLines = file.contents.toString();
 
     // strip newlines and whitespace
-    noNewLines = noNewLines.replace(/\n/gmi, '').replace(/\t/gm, '').replace('  ', ''); //whitespace should be fixed with a regex [\s]2+
+    noNewLines = noNewLines.replace(/\n/gmi, '').replace(/\t/gm, '').replace(/[\s]{2,8}/gi, '');
 
     // output our custom SB.templates['name'] = '...' syntax
     noNewLines = opt.prefix + '["'+filename+'"] =' + '\''+noNewLines+'\'' + opt.postfix;
