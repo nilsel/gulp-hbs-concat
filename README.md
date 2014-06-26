@@ -1,4 +1,4 @@
-![status](https://secure.travis-ci.org/wearefractal/gulp-concat.png?branch=master)
+![status](https://secure.travis-ci.org/nilsel/gulp-hbs-concat.png?branch=master)
 
 ## Information
 
@@ -21,7 +21,7 @@ This is a fork of [gulp-concat](https://github.com/wearefractal/gulp-concat) and
 
 Concatenates handlebars/mustache templates into a single .js file, where template files are mapped to a global template object (based on the filename of the template).
 
-The reasoning is that we want to interpolate variables and texts (which comes from a rest-api), and compile the templates at runtime in the browser. I could not find a gulp-plugin to do exactly (and only) this, so then we fork! :)
+The reasoning is that we want to interpolate variables and texts (which comes from a rest-api), and compile the templates at runtime in the browser. Also, we need to strip newlines and whitespace from our templates (to make it fit inside a javascript string) I could not find a gulp-plugin to do exactly (and only) this, so then we fork! :)
 
 #### Warning! Beginners mind! I'm a newbie to gulp, streams and stuff. This might not work as expected.
 
@@ -30,7 +30,16 @@ The reasoning is that we want to interpolate variables and texts (which comes fr
 // result will be something like this:
 MyApp.templates["welcome"] = 'Welcome {{user.name}}!';
 MyApp.templates["goodbye"] = 'Goodbye {{user.name}}!';
-
+// then it's up to you to parse/compile the templates in JS
+// psuedo-code example (MyApp.parse wraps Handlebars.compile()):
+var data = {
+  user: {
+    name: 'Hal'
+  }
+}
+var welcomeHtml = MyApp.parse(MyApp.templates.welcome, data);
+$('body').append(welcomeHtml);
+// such amaze!
 ```
 
 ## Usage
