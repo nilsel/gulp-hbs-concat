@@ -1,10 +1,11 @@
 {
-  "name": "gulp-concat",
-  "description": "Concatenates files",
-  "version": "2.2.0",
-  "homepage": "http://github.com/wearefractal/gulp-concat",
-  "repository": "git://github.com/wearefractal/gulp-concat.git",
+  "name": "gulp-hbs-concat",
+  "description": "Concatenates handlebars files into JS-object/strings",
+  "version": "0.0.3",
+  "homepage": "http://github.com/nilsel/gulp-hbs-concat",
+  "repository": "git://github.com/nilsel/gulp-hbs-concat.git",
   "author": "Fractal <contact@wearefractal.com> (http://wearefractal.com/)",
+  "contributors": "nilsel <nils@deviant.no> (https://github.com/nilsel/)",
   "main": "./index.js",
   "keywords": [
     "gulpplugin"
@@ -27,7 +28,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/wearefractal/gulp-concat/raw/master/LICENSE"
+      "url": "https://raw.githubusercontent.com/nilsel/gulp-hbs-concat/master/LICENSE"
     }
   ]
 }
