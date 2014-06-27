@@ -18,24 +18,24 @@ module.exports = function(fileName, opt) {
   var buffer = [];
   var firstFile = null;
   var newLineBuffer = opt.newLine ? new Buffer(opt.newLine) : null;
-
+  var noNewLines, filename;
 
   function bufferContents(file) {
     if (file.isNull()) return; // ignore
     if (file.isStream()) return this.emit('error', new PluginError('gulp-concat',  'Streaming not supported'));
 
-    if (firstFile && newLineBuffer) buffer.push(newLineBuffer);
-    if (!firstFile) firstFile = file;
+    if (!firstFile){
+      firstFile = file;
+    }
 
-    var filename = file.path.split('/').pop().split('.')[0];
-
-    var noNewLines = file.contents.toString();
+    filename = file.path.split('/').pop().split('.')[0];
+    noNewLines = file.contents.toString();
 
     // strip newlines and whitespace
-    noNewLines = noNewLines.replace(/\n/gmi, '').replace(/\t/gm, '').replace(/[\s]{2,8}/gi, '');
+    noNewLines = noNewLines.replace(/\n/gmi, '').replace('\r\n', '').replace(/\t/gm, '').replace(/[\s]{2,8}/gi, '');
 
     // output our custom SB.templates['name'] = '...' syntax
-    noNewLines = opt.prefix + '["'+filename+'"] =' + '\''+noNewLines+'\'' + opt.postfix;
+    noNewLines = opt.prefix + '["'+filename+'"] = ' + '\''+noNewLines+'\'' + opt.postfix;
 
     var noNewLineBuffer = new Buffer(noNewLines);
 
