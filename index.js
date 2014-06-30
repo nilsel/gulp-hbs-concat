@@ -6,7 +6,7 @@ var File = gutil.File;
 var Buffer = require('buffer').Buffer;
 
 module.exports = function(fileName, opt) {
-  if (!fileName) throw new PluginError('gulp-concat', 'Missing fileName option for gulp-concat');
+  if (!fileName) throw new PluginError('gulp-hbs-concat', 'Missing fileName option for gulp-hbs-concat');
   if (!opt) opt = {};
   // quick&dirty check for options
   if(!opt.hasOwnProperty('prefix')){ opt.prefix = ''; }
@@ -22,7 +22,7 @@ module.exports = function(fileName, opt) {
 
   function bufferContents(file) {
     if (file.isNull()) return; // ignore
-    if (file.isStream()) return this.emit('error', new PluginError('gulp-concat',  'Streaming not supported'));
+    if (file.isStream()) return this.emit('error', new PluginError('gulp-hbs-concat',  'Streaming not supported'));
 
     if (!firstFile){
       firstFile = file;
