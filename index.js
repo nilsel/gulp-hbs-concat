@@ -28,11 +28,11 @@ module.exports = function(fileName, opt) {
       firstFile = file;
     }
 
-    filename = file.path.split('/').pop().split('.')[0];
+    filename = file.path.split(path.sep).pop().split('.')[0];
     noNewLines = file.contents.toString();
 
     // strip newlines and whitespace
-    noNewLines = noNewLines.replace(/\n/gmi, '').replace('\r\n', '').replace(/\t/gm, '').replace(/[\s]{2,8}/gi, '');
+    noNewLines = noNewLines.replace(/[\n\r\t\f]/gmi, '').replace(/[\s]{2,8}/gi, '');
 
     // output our custom SB.templates['name'] = '...' syntax
     noNewLines = opt.prefix + '["'+filename+'"] = ' + '\''+noNewLines+'\'' + opt.postfix;
