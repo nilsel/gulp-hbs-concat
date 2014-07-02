@@ -5,7 +5,7 @@ var File = require('gulp-util').File;
 var Buffer = require('buffer').Buffer;
 require('mocha');
 
-describe('gulp-concat', function() {
+describe('gulp-hbs-concat', function() {
   describe('concat()', function() {
     var input;
 
@@ -38,7 +38,7 @@ describe('gulp-concat', function() {
           should.exist(newFile.contents);
 
           var newFilePath = path.resolve(newFile.path);
-          var expectedFilePath = path.resolve('/home/contra/test/test.js');
+          var expectedFilePath = path.resolve('./test/test.js');
           newFilePath.should.equal(expectedFilePath);
 
           newFile.relative.should.equal('test.js');
@@ -49,9 +49,9 @@ describe('gulp-concat', function() {
 
         contentses.forEach(function(contents, i) {
           stream.write(new File({
-            cwd: '/home/contra/',
-            base: '/home/contra/test',
-            path: '/home/contra/test/file' + i.toString() + '.js',
+            cwd: './',
+            base: './test',
+            path: './test/file' + i.toString() + '.js',
             contents: new Buffer(contents)
           }));
         });

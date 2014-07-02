@@ -35,7 +35,10 @@ module.exports = function(fileName, opt) {
     noNewLines = noNewLines.replace(/[\n\r\t\f]/gmi, '').replace(/[\s]{2,8}/gi, '');
 
     // output our custom SB.templates['name'] = '...' syntax
-    noNewLines = opt.prefix + '["'+filename+'"] = ' + '\''+noNewLines+'\'' + opt.postfix;
+    // TODO: better handling of options
+    if(opt.prefix !== '' && opt.postfix !== ''){
+      noNewLines = opt.prefix + '["'+filename+'"] = ' + '\''+noNewLines+'\'' + opt.postfix;
+    }
 
     var noNewLineBuffer = new Buffer(noNewLines);
 
