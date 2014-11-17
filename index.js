@@ -5,12 +5,17 @@ var PluginError = gutil.PluginError;
 var File = gutil.File;
 var Buffer = require('buffer').Buffer;
 
+
 module.exports = function(fileName, opt) {
+
   if (!fileName) throw new PluginError('gulp-hbs-concat', 'Missing fileName option for gulp-hbs-concat');
   if (!opt) opt = {};
   // quick&dirty check for options
   if(!opt.hasOwnProperty('prefix')){ opt.prefix = ''; }
   if(!opt.hasOwnProperty('postfix')){ opt.prefix = ''; }
+  // add outer-wrapping code so we can support cjs/umd
+  if(!opt.hasOwnProperty('wrapper_start')){ opt.wrapper_start = ''; }
+  if(!opt.hasOwnProperty('wrapper_stop')){ opt.wrapper_stop = ''; }
 
   // to preserve existing |undefined| behaviour and to introduce |newLine: ""| for binaries
   if (typeof opt.newLine !== 'string') opt.newLine = gutil.linefeed;
@@ -29,27 +34,26 @@ module.exports = function(fileName, opt) {
     }
 
     filename = file.path.split(path.sep).pop().split('.')[0];
-    noNewLines = file.contents.toString();
+    flatLines = file.contents.toString();
 
-    // strip newlines and whitespace
-    noNewLines = noNewLines.replace(/[\n\r\t\f]/gmi, '').replace(/[\s]{2,8}/gi, '');
+    // strip newlines and whitespace (only if between 3 and 8 spaces)
+    flatLines = flatLines.replace(/[\n\r\t\f]/gmi, '').replace(/[\s]{2,8}/gi, '');
 
-    // output our custom SB.templates['name'] = '...' syntax
-    // TODO: better handling of options
-    if(opt.prefix !== '' && opt.postfix !== ''){
-      noNewLines = opt.prefix + '["'+filename+'"] = ' + '\''+noNewLines+'\'' + opt.postfix;
-    }
+    // output custom "templatename": '...' syntax
+    // TODO: better handling of options, way too hardcoded this way
+    flatLines = opt.prefix + '"'+filename+'": ' + '\''+flatLines+'\'' + opt.postfix + opt.newLine;
 
-    var noNewLineBuffer = new Buffer(noNewLines);
+    var finalizedBuffer = new Buffer(flatLines);
 
-    buffer.push(noNewLineBuffer);
+    buffer.push(finalizedBuffer);
     // buffer.push(file.contents);
   }
 
   function endStream() {
     if (buffer.length === 0) return this.emit('end');
 
-    var joinedContents = Buffer.concat(buffer);
+    var finalOutput = opt.wrapper_start + buffer.toString() + opt.wrapper_stop;
+    var finalBuffer = new Buffer(finalOutput);
 
     var joinedPath = path.join(firstFile.base, fileName);
 
@@ -57,7 +61,7 @@ module.exports = function(fileName, opt) {
       cwd: firstFile.cwd,
       base: firstFile.base,
       path: joinedPath,
-      contents: joinedContents
+      contents: finalBuffer
     });
 
     this.emit('data', joinedFile);
